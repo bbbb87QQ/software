@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><title>教室預約首頁</title></head>
+<body>
+    <h1>🏫 教室借用系統首頁</h1>
+    {% if messages %}
+        {% for msg in messages %}<p style="color:green;">{{ msg }}</p>{% endfor %}
+    {% endif %}
+
+    {% if user.is_authenticated %}
+        <p>目前登入帳號：<b>{{ user.username }}</b></p>
+        <p>身分角色：<b>{{ user.profile.get_role_display }}</b></p>
+        <a href="/admin-only/">測試進入【管理員專區】</a> | 
+        <a href="/logout/">登出</a>
+    {% else %}
+        <p>目前狀態：訪客（未登入）</p>
+        <p><em>*所有人都能查看教室狀況，若要借用或管理請先登入*</em></p>
+        <a href="/login/">前往登入</a> | 
+        <a href="/admin-only/">測試闖入【管理員專區】(會被門禁擋下)</a>
+    {% endif %}
+</body>
+</html>

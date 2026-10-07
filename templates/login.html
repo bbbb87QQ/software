@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>登入測試</title>
+</head>
+<body style="font-family: sans-serif; padding: 30px;">
+    <h2>🔐 系統登入</h2>
+    
+    {% if messages %}
+        {% for msg in messages %}
+            <p style="color: red; font-weight: bold;">{{ msg }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        <div style="margin-bottom: 10px;">
+            {{ form.as_p }}
+        </div>
+        <button type="submit" style="padding: 6px 16px; cursor: pointer;">立即登入</button>
+    </form>
+
+    <br>
+    <a href="/">← 回首頁</a>
+</body>
+</html>
