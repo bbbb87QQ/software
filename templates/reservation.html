@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="utf-8">
+    <title>教室預約</title>
+</head>
+<body>
+    <h1>教室預約</h1>
+
+    {% for msg in messages %}
+        <p>{{ msg }}</p>
+    {% endfor %}
+
+    <p>借用人：{{ user.username }}</p>
+    <p>教室：{{ classroom }}</p>
+    <p>日期：{{ date }}</p>
+    <p>時段：{{ slot_label }}</p>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <label for="purpose">借用用途：</label><br>
+        <textarea
+            id="purpose"
+            name="purpose"
+            rows="4"
+            cols="30"
+            required
+        >{{ request.POST.purpose }}</textarea>
+
+        <br><br>
+        <button type="submit">確認預約</button>
+        <a href="{% url 'home' %}">取消</a>
+    </form>
+</body>
+</html>

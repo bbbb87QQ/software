@@ -18,5 +18,52 @@
         <a href="/login/">前往登入</a> | 
         <a href="/admin-only/">測試闖入【管理員專區】(會被門禁擋下)</a>
     {% endif %}
+
+    <table border="1" cellpadding="8">
+    <tr>
+        <th>教室</th>
+        <th>容量</th>
+        <th>設備</th>
+    </tr>
+    {% for classroom in classrooms %}
+    <tr>
+        <td>{{ classroom.name }}</td>
+        <td>{{ classroom.capacity }} 人</td>
+        <td>{{ classroom.equipment|join:"、" }}</td>
+    </tr>
+    {% endfor %}
+    </table>
+    #-------------------------可借用時段ui---------------------------------------------
+
+    <h2>A101 時段（2026-10-08）</h2>
+
+<table border="1" cellpadding="8">
+    <tr>
+        <th>時段</th>
+        <th>狀態</th>
+        <th>操作</th>
+    </tr>
+
+    {% for slot in time_slots %}
+    <tr>
+        <td>{{ slot.label }}</td>
+        {% if slot.available %}
+            <td>可借用</td>
+            <td>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'reservation' %}?classroom=A101&date=2026-10-08&slot={{ slot.id }}">預約\</a>
+                {% else %}
+                    <a href="{% url 'login' %}">登入後預約</a>
+                {% endif %}
+            </td>
+        {% else %}
+            <td>已借用</td>
+            <td><button type="button" disabled>不可借用</button></td>
+        {% endif %}
+    </tr>
+    {% endfor %}
+</table>
+
+
 </body>
 </html>
