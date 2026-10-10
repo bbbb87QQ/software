@@ -19,5 +19,6 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),  # Django 內建後台
+    path('classrooms/', include('classrooms.urls')),
     path('', include('core.urls')),   # 把所有 core 的網址（首頁、登入、登出）串接進來
 ]

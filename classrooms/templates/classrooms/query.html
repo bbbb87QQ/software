@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>教室使用狀況查詢</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f4f7f6; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input, select, button { padding: 8px 12px; font-size: 16px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: center; }
+        th { background-color: #007bff; color: white; }
+        .available { color: green; font-weight: bold; }
+        .booked { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>教室使用狀況與時段查詢</h2>
+    <form method="GET" action="">
+        <div class="form-group">
+            <label for="date">選擇日期：</label>
+            <input type="date" id="date" name="date" value="{{ request.GET.date }}">
+        </div>
+        <div class="form-group">
+            <label for="time_slot">選擇時段：</label>
+            <select id="time_slot" name="time_slot">
+                <option value="">-- 請選擇時段 --</option>
+                <option value="09:00 - 10:00" {% if request.GET.time_slot == "09:00-10:00" %}selected{% endif %}>09:00 - 10:00</option>
+                <option value="10:00 - 11:00" {% if request.GET.time_slot == "10:00-11:00" %}selected{% endif %}>10:00 - 11:00</option>
+                <option value="13:00 - 14:00" {% if request.GET.time_slot == "13:00-14:00" %}selected{% endif %}>13:00 - 14:00</option>
+            </select>
+        </div>
+        <button type="submit">查詢狀態</button>
+    </form>
+
+    {% if classrooms %}
+    <table>
+        <thead>
+            <tr>
+                <th>教室名稱</th>
+                <th>容納人數</th>
+                <th>設備</th>
+                <th>目前狀態</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for room in classrooms %}
+            <tr>
+                <td>{{ room.name }}</td>
+                <td>{{ room.capacity }}</td>
+                <td>{{ room.equipment }}</td>
+                <td>
+                    <span class="{% if room.status == '可借用' %}available{% else %}booked{% endif %}">
+                        {{ room.status }}
+                    </span>
+                </td>
+                <td>
+                    {% if room.status == '可借用' %}
+                        <!-- 這裡未來可以串接第四組的預約功能 -->
+                        <button onclick="alert('準備借用 {{ room.name }}')">立即借用</button>
+                    {% else %}
+                        <button disabled>已被借用</button>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+</div>
+</body>
+</html>
