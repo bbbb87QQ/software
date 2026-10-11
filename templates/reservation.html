@@ -18,6 +18,9 @@
 
     <form method="post">
         {% csrf_token %}
+        <input type="hidden" name="classroom" value="{{ classroom }}">
+        <input type="hidden" name="date" value="{{ date }}">
+        <input type="hidden" name="slot" value="{{ request.GET.slot }}">
 
         <label for="purpose">借用用途：</label><br>
         <textarea
