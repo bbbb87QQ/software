@@ -60,10 +60,11 @@
                 </td>
                 <td>
                     {% if room.status == '可借用' %}
-                        <!-- 這裡未來可以串接第四組的預約功能 -->
-                        <button onclick="alert('準備借用 {{ room.name }}')">立即借用</button>
+                        <a href="{% url 'classroom_reserve' %}?classroom={{ room.name }}&date={{ request.GET.date }}&slot={{ request.GET.time_slot }}">
+                            <button type="button" style="background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">立即借用</button>
+                        </a>
                     {% else %}
-                        <button disabled>已被借用</button>
+                        <button disabled style="background-color: #ccc; border: none; border-radius: 4px; cursor: not-allowed;">已被借用</button>
                     {% endif %}
                 </td>
             </tr>

@@ -4,36 +4,38 @@
     <meta charset="utf-8">
     <title>教室預約</title>
 </head>
-<body>
+<body style="font-family: sans-serif; padding: 24px;">
     <h1>教室預約</h1>
 
     {% for msg in messages %}
-        <p>{{ msg }}</p>
+        <p style="color: {% if msg.tags == 'error' %}red{% else %}green{% endif %}; font-weight: bold;">
+            {{ msg }}
+        </p>
     {% endfor %}
 
-    <p>借用人：{{ user.username }}</p>
-    <p>教室：{{ classroom }}</p>
-    <p>日期：{{ date }}</p>
-    <p>時段：{{ slot_label }}</p>
+    <p>借用人：<b>{{ user.username }}</b></p>
+    <p>教室：<b>{{ classroom }}</b></p>
+    <p>日期：<b>{{ date }}</b></p>
+    <p>時段：<b>{{ slot_label }}</b></p>
 
-    <form method="post">
+    <form method="post" action="{% url 'classroom_reserve' %}">
         {% csrf_token %}
         <input type="hidden" name="classroom" value="{{ classroom }}">
         <input type="hidden" name="date" value="{{ date }}">
-        <input type="hidden" name="slot" value="{{ request.GET.slot }}">
+        <input type="hidden" name="slot" value="{{ slot_label }}">
 
         <label for="purpose">借用用途：</label><br>
         <textarea
             id="purpose"
             name="purpose"
             rows="4"
-            cols="30"
+            cols="40"
             required
-        >{{ request.POST.purpose }}</textarea>
+        >{{ purpose }}</textarea>
 
         <br><br>
         <button type="submit">確認預約</button>
-        <a href="{% url 'home' %}">取消</a>
+        <a href="{% url 'classroom_query' %}?date={{ date }}&time_slot={{ slot_label }}">返回查詢</a>
     </form>
 </body>
 </html>

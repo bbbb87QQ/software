@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Classroom(models.Model):
     name = models.CharField(max_length=50, verbose_name="教室名稱")
@@ -9,9 +10,11 @@ class Classroom(models.Model):
         return self.name
 
 class Booking(models.Model):
+    user=models.ForeignKey(User,on_delete=models.CASCADE,verbose_name="借用人",null=True,blank=True)
     classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE, verbose_name="教室")
     date = models.DateField(verbose_name="借用日期")
     time_slot = models.CharField(max_length=50, verbose_name="借用時段 (例: 09:00-10:00)")
+    purpose = models.TextField(verbose_name="借用用途", blank=True)
     status = models.CharField(max_length=20, default='Booked', verbose_name="狀態")
 
     def __str__(self):
